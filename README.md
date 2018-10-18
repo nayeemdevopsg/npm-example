@@ -6,7 +6,7 @@ An example project using Node.js and npm
 - Clone this project:
 
 ```bash
-git clone https://github.com/Spy126/npm-example.git
+git clone https://github.com/spy126/npm-example.git
 cd npm-example
 ```
 
