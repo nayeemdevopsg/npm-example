@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Spy126/npm-example.git"
+    "url": "git+https://github.com/spy126/npm-example.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Spy126/npm-example/issues"
+    "url": "https://github.com/spy126/npm-example/issues"
   },
-  "homepage": "https://github.com/Spy126/npm-example#readme",
+  "homepage": "https://github.com/spy126/npm-example#readme",
   "dependencies": {
   }
 }
