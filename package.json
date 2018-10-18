@@ -16,5 +16,7 @@
   "bugs": {
     "url": "https://github.com/Spy126/npm-example/issues"
   },
-  "homepage": "https://github.com/Spy126/npm-example#readme"
+  "homepage": "https://github.com/Spy126/npm-example#readme",
+  "dependencies": {
+  }
 }
