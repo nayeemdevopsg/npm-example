@@ -1,0 +1,61 @@
+# .github/workflows/main.yaml
+
+name: Continuous Integration and Changelog Update
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [closed]
+
+jobs:
+  build_and_update_changelog:
+    name: Build and Update Changelog
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run unit tests
+        run: npm test
+  
+      - name: Extract and append changelog
+        if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged)
+        run: |
+          echo "Extracting data for changelog..."
+          # Extract commit data or PR data based on event type
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            COMMIT_REF="${{ github.sha }}"
+            COMMIT_MSG="${{ github.event.head_commit.message }}"
+            AUTHOR_NAME="${{ github.event.head_commit.author.name }}"
+            LABELS=""  # Generally, commits don't have labels
+          else
+            COMMIT_REF="${{ github.event.pull_request.number }}"
+            COMMIT_MSG="${{ github.event.pull_request.title }}"
+            AUTHOR_NAME="${{ github.event.pull_request.user.login }}"
+            LABELS=$(echo ${{ toJson(github.event.pull_request.labels.*.name) }})
+          fi
+
+          # Prepare changelog entry
+          CHANGELOG_ENTRY="## [${COMMIT_REF}] - $(date +'%Y-%m-%d')\n- Description: ${COMMIT_MSG}\n- Author: ${AUTHOR_NAME}\n- Labels: ${LABELS}\n"
+          echo "${CHANGELOG_ENTRY}" >> CHANGELOG.md
+          echo "Changelog updated."
+
+          # Commit and push the changelog update
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add CHANGELOG.md
+          git commit -m "Update CHANGELOG.md"
+          git push
+  
+      - name: Deploy to staging
+        if: success() && (github.ref == 'refs/heads/main')
+        run: |
+          echo "Deploying to staging environment..."
+          # Mock deployment process
+          echo "Deployment complete."
